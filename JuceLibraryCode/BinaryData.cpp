@@ -89,8 +89,7 @@ static const unsigned char temp_binary_data_0[] =
 "      <Slider caption=\"Offset (dB)\" parameter=\"offset\" slider-type=\"rotary-horizontal-vertical\"/>\r\n"
 "    </View>\r\n"
 "  </View>\r\n"
-"</magic>\r\n"
-"\0";
+"</magic>\r\n";
 
 const char* layout_3_xml = (const char*) temp_binary_data_0;
 
@@ -106,7 +105,7 @@ const char* getNamedResource (const char* resourceNameUTF8, int& numBytes)
 
     switch (hash)
     {
-        case 0x815084b6:  numBytes = 7195; return layout_3_xml;
+        case 0x815084b6:  numBytes = 7194; return layout_3_xml;
         default: break;
     }
 

@@ -247,7 +247,7 @@ void AndrewsAdaptiveFilter::processBlock (juce::AudioBuffer<float>& buffer, juce
                 } else {
                     fftData_thespot[i] = 0;
                 }
-            }
+            } // A comment
             
 //            std::cout<<max_val<<std::endl;
             
