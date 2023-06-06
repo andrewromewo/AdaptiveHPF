@@ -1156,7 +1156,7 @@ class hpf : public dsp {
 	virtual void instanceConstants(int sample_rate) {
 		fSampleRate = sample_rate;
 		float fConst0 = std::min<float>(1.92e+05f, std::max<float>(1.0f, float(fSampleRate)));
-		float fConst1 = std::tan(56548.668f / fConst0);
+		float fConst1 = std::tan(25132.742f / fConst0);
 		float fConst2 = 1.0f / fConst1;
 		fConst3 = 1.0f / ((fConst2 + 0.5176381f) / fConst1 + 1.0f);
 		fConst4 = 1.0f / ((fConst2 + 1.4142135f) / fConst1 + 1.0f);
