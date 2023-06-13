@@ -152,21 +152,24 @@ void AndrewsAdaptiveFilter::changeProgramName (int index, const juce::String& ne
 //==============================================================================
 void AndrewsAdaptiveFilter::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-  // Use this method as the place to do any pre-playback
-  // initialisation that you need..
+    // Use this method as the place to do any pre-playback
+    // initialisation that you need..
 
-  fftPlot->prepareToPlay(sampleRate, samplesPerBlock);
-  // Give our magicState the required sampling rate and samples per block
-  magicState.prepareToPlay(sampleRate, samplesPerBlock);
+    fftPlot->prepareToPlay(sampleRate, samplesPerBlock);
+    // Give our magicState the required sampling rate and samples per block
+    magicState.prepareToPlay(sampleRate, samplesPerBlock);
 
   
     // Might want to init FFT to zero
-  fs = sampleRate;
+    fs = sampleRate;
     
     bpfP->init(sampleRate);
-    bpfUIP->setParamValue("Freq", 200);
+//    bpfUIP->setParamValue("Freq", 200);
     
     leaky = std::exp(-(FFT_SIZE) / (400 * 0.001 * fs));
+    
+    thePRE = 50;
+    thePOST = 50;
     
     preparedToPlay = true;
 }
@@ -247,7 +250,7 @@ void AndrewsAdaptiveFilter::processBlock (juce::AudioBuffer<float>& buffer, juce
                 } else {
                     fftData_thespot[i] = 0;
                 }
-            } // A comment
+            }
             
 //            std::cout<<max_val<<std::endl;
             
@@ -273,7 +276,7 @@ void AndrewsAdaptiveFilter::processBlock (juce::AudioBuffer<float>& buffer, juce
         }
     }
 //    bpfUIP->setParamValue("Freq",max_val*binSize);
-//    std::cout<<(max_val*binSize)<<std::endl;
+//    std::cout<<(buffer.getNumChannels())<<std::endl;
     
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
@@ -288,9 +291,9 @@ void AndrewsAdaptiveFilter::processBlock (juce::AudioBuffer<float>& buffer, juce
     float frequency = max_val*binSize;
     CentralVal = frequency;
     if (frequency > 12000) frequency = 12000;
-    bpfUIP->setParamValue("Freq",frequency);
+//    bpfUIP->setParamValue("Freq",frequency);
 //    buffer.applyGain(0.5);
-    buffer.copyFrom(1, 0, buffer, 0, 0, buffer.getNumSamples());
+//    buffer.copyFrom(1, 0, buffer, 0, 0, buffer.getNumSamples());
 }
 
 //==============================================================================

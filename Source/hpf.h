@@ -1,5 +1,5 @@
 /* ------------------------------------------------------------
-name: "hpf"
+name: "testing"
 Code generated with Faust 2.58.18 (https://faust.grame.fr)
 Compilation options: -a faustMinimal.h -lang cpp -i -inpl -ct 1 -cn hpf -es 1 -mcd 16 -single -ftz 0
 ------------------------------------------------------------ */
@@ -1064,7 +1064,6 @@ class FAUST_API ScopedNoDenormals {
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
-#include <math.h>
 
 #ifndef FAUSTCLASS 
 #define FAUSTCLASS hpf
@@ -1081,73 +1080,35 @@ class FAUST_API ScopedNoDenormals {
 #define RESTRICT __restrict__
 #endif
 
-static float hpf_faustpower2_f(float value) {
-	return value * value;
-}
 
 class hpf : public dsp {
 	
  private:
 	
+	float fRec0[2];
+	float fRec1[2];
 	int fSampleRate;
-	float fConst3;
-	float fConst4;
-	float fConst5;
-	float fConst6;
-	FAUSTFLOAT fHslider0;
-	float fRec5[3];
-	float fRec4[3];
-	float fRec3[3];
-	float fConst7;
-	float fConst8;
-	float fRec2[3];
-	float fConst9;
-	float fRec1[3];
-	float fConst10;
-	float fRec0[3];
 	
  public:
 	hpf() {}
 
 	void metadata(Meta* m) { 
 		m->declare("compile_options", "-a faustMinimal.h -lang cpp -i -inpl -ct 1 -cn hpf -es 1 -mcd 16 -single -ftz 0");
-		m->declare("filename", "hpf.dsp");
-		m->declare("filters.lib/fir:author", "Julius O. Smith III");
-		m->declare("filters.lib/fir:copyright", "Copyright (C) 2003-2019 by Julius O. Smith III <jos@ccrma.stanford.edu>");
-		m->declare("filters.lib/fir:license", "MIT-style STK-4.3 license");
-		m->declare("filters.lib/highpass:author", "Julius O. Smith III");
-		m->declare("filters.lib/highpass:copyright", "Copyright (C) 2003-2019 by Julius O. Smith III <jos@ccrma.stanford.edu>");
-		m->declare("filters.lib/iir:author", "Julius O. Smith III");
-		m->declare("filters.lib/iir:copyright", "Copyright (C) 2003-2019 by Julius O. Smith III <jos@ccrma.stanford.edu>");
-		m->declare("filters.lib/iir:license", "MIT-style STK-4.3 license");
+		m->declare("filename", "testing.dsp");
 		m->declare("filters.lib/lowpass0_highpass1", "Copyright (C) 2003-2019 by Julius O. Smith III <jos@ccrma.stanford.edu>");
-		m->declare("filters.lib/lowpass0_highpass1:author", "Julius O. Smith III");
-		m->declare("filters.lib/lowpass:author", "Julius O. Smith III");
-		m->declare("filters.lib/lowpass:copyright", "Copyright (C) 2003-2019 by Julius O. Smith III <jos@ccrma.stanford.edu>");
-		m->declare("filters.lib/lowpass:license", "MIT-style STK-4.3 license");
 		m->declare("filters.lib/name", "Faust Filters Library");
-		m->declare("filters.lib/tf2:author", "Julius O. Smith III");
-		m->declare("filters.lib/tf2:copyright", "Copyright (C) 2003-2019 by Julius O. Smith III <jos@ccrma.stanford.edu>");
-		m->declare("filters.lib/tf2:license", "MIT-style STK-4.3 license");
-		m->declare("filters.lib/tf2s:author", "Julius O. Smith III");
-		m->declare("filters.lib/tf2s:copyright", "Copyright (C) 2003-2019 by Julius O. Smith III <jos@ccrma.stanford.edu>");
-		m->declare("filters.lib/tf2s:license", "MIT-style STK-4.3 license");
+		m->declare("filters.lib/pole:author", "Julius O. Smith III");
+		m->declare("filters.lib/pole:copyright", "Copyright (C) 2003-2019 by Julius O. Smith III <jos@ccrma.stanford.edu>");
+		m->declare("filters.lib/pole:license", "MIT-style STK-4.3 license");
 		m->declare("filters.lib/version", "0.3");
-		m->declare("maths.lib/author", "GRAME");
-		m->declare("maths.lib/copyright", "GRAME");
-		m->declare("maths.lib/license", "LGPL with exception");
-		m->declare("maths.lib/name", "Faust Math Library");
-		m->declare("maths.lib/version", "2.6");
-		m->declare("name", "hpf");
-		m->declare("platform.lib/name", "Generic Platform Library");
-		m->declare("platform.lib/version", "0.3");
+		m->declare("name", "testing");
 	}
 
 	virtual int getNumInputs() {
-		return 1;
+		return 2;
 	}
 	virtual int getNumOutputs() {
-		return 1;
+		return 2;
 	}
 	
 	static void classInit(int sample_rate) {
@@ -1155,41 +1116,17 @@ class hpf : public dsp {
 	
 	virtual void instanceConstants(int sample_rate) {
 		fSampleRate = sample_rate;
-		float fConst0 = std::min<float>(1.92e+05f, std::max<float>(1.0f, float(fSampleRate)));
-		float fConst1 = std::tan(25132.742f / fConst0);
-		float fConst2 = 1.0f / fConst1;
-		fConst3 = 1.0f / ((fConst2 + 0.5176381f) / fConst1 + 1.0f);
-		fConst4 = 1.0f / ((fConst2 + 1.4142135f) / fConst1 + 1.0f);
-		fConst5 = 1.0f / ((fConst2 + 1.9318516f) / fConst1 + 1.0f);
-		fConst6 = 3.1415927f / fConst0;
-		fConst7 = (fConst2 + -1.9318516f) / fConst1 + 1.0f;
-		fConst8 = 2.0f * (1.0f - 1.0f / hpf_faustpower2_f(fConst1));
-		fConst9 = (fConst2 + -1.4142135f) / fConst1 + 1.0f;
-		fConst10 = (fConst2 + -0.5176381f) / fConst1 + 1.0f;
 	}
 	
 	virtual void instanceResetUserInterface() {
-		fHslider0 = FAUSTFLOAT(1e+03f);
 	}
 	
 	virtual void instanceClear() {
-		for (int l0 = 0; l0 < 3; l0 = l0 + 1) {
-			fRec5[l0] = 0.0f;
+		for (int l0 = 0; l0 < 2; l0 = l0 + 1) {
+			fRec0[l0] = 0.0f;
 		}
-		for (int l1 = 0; l1 < 3; l1 = l1 + 1) {
-			fRec4[l1] = 0.0f;
-		}
-		for (int l2 = 0; l2 < 3; l2 = l2 + 1) {
-			fRec3[l2] = 0.0f;
-		}
-		for (int l3 = 0; l3 < 3; l3 = l3 + 1) {
-			fRec2[l3] = 0.0f;
-		}
-		for (int l4 = 0; l4 < 3; l4 = l4 + 1) {
-			fRec1[l4] = 0.0f;
-		}
-		for (int l5 = 0; l5 < 3; l5 = l5 + 1) {
-			fRec0[l5] = 0.0f;
+		for (int l1 = 0; l1 < 2; l1 = l1 + 1) {
+			fRec1[l1] = 0.0f;
 		}
 	}
 	
@@ -1212,47 +1149,24 @@ class hpf : public dsp {
 	}
 	
 	virtual void buildUserInterface(UI* ui_interface) {
-		ui_interface->openVerticalBox("hpf");
-		ui_interface->addHorizontalSlider("Freq", &fHslider0, FAUSTFLOAT(1e+03f), FAUSTFLOAT(2e+01f), FAUSTFLOAT(1.2e+04f), FAUSTFLOAT(1.0f));
+		ui_interface->openVerticalBox("testing");
 		ui_interface->closeBox();
 	}
 	
 	virtual void compute(int count, FAUSTFLOAT** inputs, FAUSTFLOAT** outputs) {
 		FAUSTFLOAT* input0 = inputs[0];
+		FAUSTFLOAT* input1 = inputs[1];
 		FAUSTFLOAT* output0 = outputs[0];
-		float fSlow0 = std::tan(fConst6 * float(fHslider0));
-		float fSlow1 = 1.0f / fSlow0;
-		float fSlow2 = 1.0f / ((fSlow1 + 0.5176381f) / fSlow0 + 1.0f);
-		float fSlow3 = hpf_faustpower2_f(fSlow0);
-		float fSlow4 = 1.0f / fSlow3;
-		float fSlow5 = 1.0f / ((fSlow1 + 1.4142135f) / fSlow0 + 1.0f);
-		float fSlow6 = 1.0f / ((fSlow1 + 1.9318516f) / fSlow0 + 1.0f);
-		float fSlow7 = (fSlow1 + -1.9318516f) / fSlow0 + 1.0f;
-		float fSlow8 = 2.0f * (1.0f - fSlow4);
-		float fSlow9 = 0.0f - 2.0f / fSlow3;
-		float fSlow10 = (fSlow1 + -1.4142135f) / fSlow0 + 1.0f;
-		float fSlow11 = (fSlow1 + -0.5176381f) / fSlow0 + 1.0f;
+		FAUSTFLOAT* output1 = outputs[1];
 		for (int i0 = 0; i0 < count; i0 = i0 + 1) {
 			float fTemp0 = float(input0[i0]);
-			fRec5[0] = fTemp0 - fSlow6 * (fSlow7 * fRec5[2] + fSlow8 * fRec5[1]);
-			fRec4[0] = fSlow6 * (fSlow4 * fRec5[0] + fSlow9 * fRec5[1] + fSlow4 * fRec5[2]) - fSlow5 * (fSlow10 * fRec4[2] + fSlow8 * fRec4[1]);
-			fRec3[0] = fSlow5 * (fSlow4 * fRec4[0] + fSlow9 * fRec4[1] + fSlow4 * fRec4[2]) - fSlow2 * (fSlow11 * fRec3[2] + fSlow8 * fRec3[1]);
-			fRec2[0] = fSlow2 * (fSlow4 * fRec3[0] + fSlow9 * fRec3[1] + fSlow4 * fRec3[2]) - fConst5 * (fConst7 * fRec2[2] + fConst8 * fRec2[1]);
-			fRec1[0] = fConst5 * (fRec2[2] + fRec2[0] + 2.0f * fRec2[1]) - fConst4 * (fConst9 * fRec1[2] + fConst8 * fRec1[1]);
-			fRec0[0] = fConst4 * (fRec1[2] + fRec1[0] + 2.0f * fRec1[1]) - fConst3 * (fConst10 * fRec0[2] + fConst8 * fRec0[1]);
-			output0[i0] = FAUSTFLOAT(fConst3 * (fRec0[2] + fRec0[0] + 2.0f * fRec0[1]));
-			fRec5[2] = fRec5[1];
-			fRec5[1] = fRec5[0];
-			fRec4[2] = fRec4[1];
-			fRec4[1] = fRec4[0];
-			fRec3[2] = fRec3[1];
-			fRec3[1] = fRec3[0];
-			fRec2[2] = fRec2[1];
-			fRec2[1] = fRec2[0];
-			fRec1[2] = fRec1[1];
-			fRec1[1] = fRec1[0];
-			fRec0[2] = fRec0[1];
+			float fTemp1 = float(input1[i0]);
+			fRec0[0] = fTemp0 + 0.7f * fRec0[1];
+			output0[i0] = FAUSTFLOAT(fRec0[0]);
+			fRec1[0] = fTemp1 + 0.7f * fRec1[1];
+			output1[i0] = FAUSTFLOAT(fRec1[0]);
 			fRec0[1] = fRec0[0];
+			fRec1[1] = fRec1[0];
 		}
 	}
 

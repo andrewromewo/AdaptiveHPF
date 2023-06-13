@@ -111,6 +111,10 @@ private:
     bool preparedToPlay = false;
     
     float leaky;
+    
+    float thePRE;
+    float thePOST;
+    
     double fs;
     float off_val;
     juce::Value CentralVal;
