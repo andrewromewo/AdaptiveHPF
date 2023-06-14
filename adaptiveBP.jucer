@@ -14,7 +14,7 @@
             file="Source/PluginProcessor.cpp"/>
       <FILE id="PDtbi8" name="PluginProcessor.h" compile="0" resource="0"
             file="Source/PluginProcessor.h"/>
-      <FILE id="L6ECOv" name="hpf.h" compile="0" resource="0" file="Source/hpf.h"/>
+      <FILE id="IQ84iP" name="CompiledFaust.h" compile="0" resource="0" file="Source/CompiledFaust.h"/>
       <FILE id="prtyZq" name="Visualizer.cpp" compile="1" resource="0" file="Source/Visualizer.cpp"/>
       <FILE id="dXKZzy" name="Visualizer.h" compile="0" resource="0" file="Source/Visualizer.h"/>
     </GROUP>

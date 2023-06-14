@@ -15,7 +15,7 @@
 #include <JuceHeader.h>
 // Import our Visualizer code
 #include "Visualizer.h"
-#include "hpf.h"
+#include "CompiledFaust.h"
 
 // Macros for FFT size and order. Try changing these!
 static const int FFT_ORDER = 11;
@@ -78,11 +78,11 @@ private:
     Visualizer* fftPlot = nullptr;   // This will create our FFT plot
     Visualizer* fftPlot_thespot = nullptr;   // This will create our FFT plot
     
-    std::unique_ptr<hpf> bpfP;
-    std::unique_ptr<MapUI> bpfUIP;
+    std::unique_ptr<CompiledFaust> CompiledFaustP;
+    std::unique_ptr<MapUI> CompiledFaustUIP;
     
-    hpf bpf_obj;
-    MapUI bpfUI;
+    CompiledFaust CompiledFaust_obj;
+    MapUI CompiledFaustUI;
     
     std::size_t max_val;
 

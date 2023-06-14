@@ -76,9 +76,9 @@ AndrewsAdaptiveFilter::AndrewsAdaptiveFilter()
     CentralVal = treeState.getParameterAsValue(cv);
     CentralVal = 0;
     
-    bpfP = std::make_unique<hpf>();
-    bpfUIP = std::make_unique<MapUI>();
-    bpfP->buildUserInterface(bpfUIP.get()); // load UI with the DSP parameter pointers
+    CompiledFaustP = std::make_unique<CompiledFaust>();
+    CompiledFaustUIP = std::make_unique<MapUI>();
+    CompiledFaustP->buildUserInterface(CompiledFaustUIP.get()); // load UI with the DSP parameter pointers
     
   magicState.setGuiValueTree (BinaryData::layout_3_xml, BinaryData::layout_3_xmlSize);
 }
@@ -163,7 +163,7 @@ void AndrewsAdaptiveFilter::prepareToPlay (double sampleRate, int samplesPerBloc
     // Might want to init FFT to zero
     fs = sampleRate;
     
-    bpfP->init(sampleRate);
+    CompiledFaustP->init(sampleRate);
 //    bpfUIP->setParamValue("Freq", 200);
     
     leaky = std::exp(-(FFT_SIZE) / (400 * 0.001 * fs));
@@ -281,12 +281,12 @@ void AndrewsAdaptiveFilter::processBlock (juce::AudioBuffer<float>& buffer, juce
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         float*const* writePointers = buffer.getArrayOfWritePointers();
-        int nChannelsFaust = bpfP->getNumOutputs();
-        jassert(nChannelsFaust == bpfP->getNumInputs()); // sanity check
+        int nChannelsFaust = CompiledFaustP->getNumOutputs();
+        jassert(nChannelsFaust == CompiledFaustP->getNumInputs()); // sanity check
         float* bufferPointersFaust[nChannelsFaust];
         for (int i=0; i<nChannelsFaust; i++)
             bufferPointersFaust[i] = writePointers[i];
-        bpfP->compute(buffer.getNumSamples(), bufferPointersFaust, bufferPointersFaust);
+        CompiledFaustP->compute(buffer.getNumSamples(), bufferPointersFaust, bufferPointersFaust);
     }
     float frequency = max_val*binSize;
     CentralVal = frequency;
