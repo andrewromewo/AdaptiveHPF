@@ -164,7 +164,7 @@ void AndrewsAdaptiveFilter::prepareToPlay (double sampleRate, int samplesPerBloc
     fs = sampleRate;
     
     CompiledFaustP->init(sampleRate);
-//    bpfUIP->setParamValue("Freq", 200);
+//    CompiledFaustP->setParamValue("Freq", 200);
     
     leaky = std::exp(-(FFT_SIZE) / (400 * 0.001 * fs));
     
