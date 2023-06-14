@@ -164,7 +164,7 @@ void AndrewsAdaptiveFilter::prepareToPlay (double sampleRate, int samplesPerBloc
     fs = sampleRate;
     
     CompiledFaustP->init(sampleRate);
-//    CompiledFaustP->setParamValue("Freq", 200);
+    CompiledFaustUIP->setParamValue("Freq", 200);
     
     leaky = std::exp(-(FFT_SIZE) / (400 * 0.001 * fs));
     
@@ -275,25 +275,28 @@ void AndrewsAdaptiveFilter::processBlock (juce::AudioBuffer<float>& buffer, juce
             weighty = magnitude*i;
         }
     }
-//    bpfUIP->setParamValue("Freq",max_val*binSize);
-//    std::cout<<(buffer.getNumChannels())<<std::endl;
     
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
-    {
-        float*const* writePointers = buffer.getArrayOfWritePointers();
-        int nChannelsFaust = CompiledFaustP->getNumOutputs();
-        jassert(nChannelsFaust == CompiledFaustP->getNumInputs()); // sanity check
-        float* bufferPointersFaust[nChannelsFaust];
-        for (int i=0; i<nChannelsFaust; i++)
-            bufferPointersFaust[i] = writePointers[i];
-        CompiledFaustP->compute(buffer.getNumSamples(), bufferPointersFaust, bufferPointersFaust);
-    }
+    jassert(buffer.getNumChannels() == 2);
+    jassert(CompiledFaustP->getNumInputs() == 2);
+    jassert(CompiledFaustP->getNumOutputs() == 2);
+
+    float*const* writePointers = buffer.getArrayOfWritePointers();
+    int nChannelsFaust = CompiledFaustP->getNumOutputs();
+    jassert(nChannelsFaust == CompiledFaustP->getNumInputs()); // sanity check
+    float* bufferPointersFaust[nChannelsFaust];
+    for (int i=0; i<nChannelsFaust; i++)
+        bufferPointersFaust[i] = writePointers[i];
+    CompiledFaustP->compute(buffer.getNumSamples(), bufferPointersFaust, bufferPointersFaust);
+
     float frequency = max_val*binSize;
+    if (frequency > 1500) {
+        frequency = 1500;
+//        std::cout<<max_val<<std::endl;
+        max_val = frequency/binSize;
+    }
     CentralVal = frequency;
-    if (frequency > 12000) frequency = 12000;
-//    bpfUIP->setParamValue("Freq",frequency);
-//    buffer.applyGain(0.5);
-//    buffer.copyFrom(1, 0, buffer, 0, 0, buffer.getNumSamples());
+    CompiledFaustUIP->setParamValue("Freq",frequency - (frequency*0.25));
+
 }
 
 //==============================================================================

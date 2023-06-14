@@ -1,5 +1,5 @@
 /* ------------------------------------------------------------
-name: "FaustCode"
+name: "hpf"
 Code generated with Faust 2.58.18 (https://faust.grame.fr)
 Compilation options: -a faustMinimal.h -lang cpp -i -inpl -ct 1 -cn CompiledFaust -es 1 -mcd 16 -single -ftz 0
 ------------------------------------------------------------ */
@@ -1064,6 +1064,7 @@ class FAUST_API ScopedNoDenormals {
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
+#include <math.h>
 
 #ifndef FAUSTCLASS 
 #define FAUSTCLASS CompiledFaust
@@ -1080,28 +1081,77 @@ class FAUST_API ScopedNoDenormals {
 #define RESTRICT __restrict__
 #endif
 
+static float CompiledFaust_faustpower2_f(float value) {
+	return value * value;
+}
 
 class CompiledFaust : public dsp {
 	
  private:
 	
-	float fRec0[2];
-	float fRec1[2];
 	int fSampleRate;
+	float fConst3;
+	float fConst4;
+	float fConst5;
+	float fConst6;
+	float fConst7;
+	FAUSTFLOAT fHslider0;
+	float fConst8;
+	float fRec3[2];
+	float fRec6[3];
+	float fRec5[3];
+	float fRec4[3];
+	float fConst9;
+	float fConst10;
+	float fRec2[3];
+	float fConst11;
+	float fRec1[3];
+	float fConst12;
+	float fRec0[3];
+	float fRec12[3];
+	float fRec11[3];
+	float fRec10[3];
+	float fRec9[3];
+	float fRec8[3];
+	float fRec7[3];
 	
  public:
 	CompiledFaust() {}
 
 	void metadata(Meta* m) { 
 		m->declare("compile_options", "-a faustMinimal.h -lang cpp -i -inpl -ct 1 -cn CompiledFaust -es 1 -mcd 16 -single -ftz 0");
-		m->declare("filename", "FaustCode.dsp");
+		m->declare("filename", "hpf.dsp");
+		m->declare("filters.lib/fir:author", "Julius O. Smith III");
+		m->declare("filters.lib/fir:copyright", "Copyright (C) 2003-2019 by Julius O. Smith III <jos@ccrma.stanford.edu>");
+		m->declare("filters.lib/fir:license", "MIT-style STK-4.3 license");
+		m->declare("filters.lib/highpass:author", "Julius O. Smith III");
+		m->declare("filters.lib/highpass:copyright", "Copyright (C) 2003-2019 by Julius O. Smith III <jos@ccrma.stanford.edu>");
+		m->declare("filters.lib/iir:author", "Julius O. Smith III");
+		m->declare("filters.lib/iir:copyright", "Copyright (C) 2003-2019 by Julius O. Smith III <jos@ccrma.stanford.edu>");
+		m->declare("filters.lib/iir:license", "MIT-style STK-4.3 license");
 		m->declare("filters.lib/lowpass0_highpass1", "Copyright (C) 2003-2019 by Julius O. Smith III <jos@ccrma.stanford.edu>");
+		m->declare("filters.lib/lowpass0_highpass1:author", "Julius O. Smith III");
+		m->declare("filters.lib/lowpass:author", "Julius O. Smith III");
+		m->declare("filters.lib/lowpass:copyright", "Copyright (C) 2003-2019 by Julius O. Smith III <jos@ccrma.stanford.edu>");
+		m->declare("filters.lib/lowpass:license", "MIT-style STK-4.3 license");
 		m->declare("filters.lib/name", "Faust Filters Library");
-		m->declare("filters.lib/pole:author", "Julius O. Smith III");
-		m->declare("filters.lib/pole:copyright", "Copyright (C) 2003-2019 by Julius O. Smith III <jos@ccrma.stanford.edu>");
-		m->declare("filters.lib/pole:license", "MIT-style STK-4.3 license");
+		m->declare("filters.lib/tf2:author", "Julius O. Smith III");
+		m->declare("filters.lib/tf2:copyright", "Copyright (C) 2003-2019 by Julius O. Smith III <jos@ccrma.stanford.edu>");
+		m->declare("filters.lib/tf2:license", "MIT-style STK-4.3 license");
+		m->declare("filters.lib/tf2s:author", "Julius O. Smith III");
+		m->declare("filters.lib/tf2s:copyright", "Copyright (C) 2003-2019 by Julius O. Smith III <jos@ccrma.stanford.edu>");
+		m->declare("filters.lib/tf2s:license", "MIT-style STK-4.3 license");
 		m->declare("filters.lib/version", "0.3");
-		m->declare("name", "FaustCode");
+		m->declare("maths.lib/author", "GRAME");
+		m->declare("maths.lib/copyright", "GRAME");
+		m->declare("maths.lib/license", "LGPL with exception");
+		m->declare("maths.lib/name", "Faust Math Library");
+		m->declare("maths.lib/version", "2.6");
+		m->declare("name", "hpf");
+		m->declare("platform.lib/name", "Generic Platform Library");
+		m->declare("platform.lib/version", "0.3");
+		m->declare("signals.lib/name", "Faust Signal Routing Library");
+		m->declare("signals.lib/version", "0.3");
 	}
 
 	virtual int getNumInputs() {
@@ -1116,17 +1166,64 @@ class CompiledFaust : public dsp {
 	
 	virtual void instanceConstants(int sample_rate) {
 		fSampleRate = sample_rate;
+		float fConst0 = std::min<float>(1.92e+05f, std::max<float>(1.0f, float(fSampleRate)));
+		float fConst1 = std::tan(43982.297f / fConst0);
+		float fConst2 = 1.0f / fConst1;
+		fConst3 = 1.0f / ((fConst2 + 0.5176381f) / fConst1 + 1.0f);
+		fConst4 = 1.0f / ((fConst2 + 1.4142135f) / fConst1 + 1.0f);
+		fConst5 = 1.0f / ((fConst2 + 1.9318516f) / fConst1 + 1.0f);
+		fConst6 = 3.1415927f / fConst0;
+		fConst7 = 44.1f / fConst0;
+		fConst8 = 1.0f - fConst7;
+		fConst9 = (fConst2 + -1.9318516f) / fConst1 + 1.0f;
+		fConst10 = 2.0f * (1.0f - 1.0f / CompiledFaust_faustpower2_f(fConst1));
+		fConst11 = (fConst2 + -1.4142135f) / fConst1 + 1.0f;
+		fConst12 = (fConst2 + -0.5176381f) / fConst1 + 1.0f;
 	}
 	
 	virtual void instanceResetUserInterface() {
+		fHslider0 = FAUSTFLOAT(1e+03f);
 	}
 	
 	virtual void instanceClear() {
 		for (int l0 = 0; l0 < 2; l0 = l0 + 1) {
-			fRec0[l0] = 0.0f;
+			fRec3[l0] = 0.0f;
 		}
-		for (int l1 = 0; l1 < 2; l1 = l1 + 1) {
-			fRec1[l1] = 0.0f;
+		for (int l1 = 0; l1 < 3; l1 = l1 + 1) {
+			fRec6[l1] = 0.0f;
+		}
+		for (int l2 = 0; l2 < 3; l2 = l2 + 1) {
+			fRec5[l2] = 0.0f;
+		}
+		for (int l3 = 0; l3 < 3; l3 = l3 + 1) {
+			fRec4[l3] = 0.0f;
+		}
+		for (int l4 = 0; l4 < 3; l4 = l4 + 1) {
+			fRec2[l4] = 0.0f;
+		}
+		for (int l5 = 0; l5 < 3; l5 = l5 + 1) {
+			fRec1[l5] = 0.0f;
+		}
+		for (int l6 = 0; l6 < 3; l6 = l6 + 1) {
+			fRec0[l6] = 0.0f;
+		}
+		for (int l7 = 0; l7 < 3; l7 = l7 + 1) {
+			fRec12[l7] = 0.0f;
+		}
+		for (int l8 = 0; l8 < 3; l8 = l8 + 1) {
+			fRec11[l8] = 0.0f;
+		}
+		for (int l9 = 0; l9 < 3; l9 = l9 + 1) {
+			fRec10[l9] = 0.0f;
+		}
+		for (int l10 = 0; l10 < 3; l10 = l10 + 1) {
+			fRec9[l10] = 0.0f;
+		}
+		for (int l11 = 0; l11 < 3; l11 = l11 + 1) {
+			fRec8[l11] = 0.0f;
+		}
+		for (int l12 = 0; l12 < 3; l12 = l12 + 1) {
+			fRec7[l12] = 0.0f;
 		}
 	}
 	
@@ -1149,7 +1246,8 @@ class CompiledFaust : public dsp {
 	}
 	
 	virtual void buildUserInterface(UI* ui_interface) {
-		ui_interface->openVerticalBox("FaustCode");
+		ui_interface->openVerticalBox("hpf");
+		ui_interface->addHorizontalSlider("Freq", &fHslider0, FAUSTFLOAT(1e+03f), FAUSTFLOAT(2e+01f), FAUSTFLOAT(1.2e+04f), FAUSTFLOAT(1.0f));
 		ui_interface->closeBox();
 	}
 	
@@ -1158,15 +1256,61 @@ class CompiledFaust : public dsp {
 		FAUSTFLOAT* input1 = inputs[1];
 		FAUSTFLOAT* output0 = outputs[0];
 		FAUSTFLOAT* output1 = outputs[1];
+		float fSlow0 = fConst7 * float(fHslider0);
 		for (int i0 = 0; i0 < count; i0 = i0 + 1) {
 			float fTemp0 = float(input0[i0]);
 			float fTemp1 = float(input1[i0]);
-			fRec0[0] = fTemp0 + 0.7f * fRec0[1];
-			output0[i0] = FAUSTFLOAT(fRec0[0]);
-			fRec1[0] = fTemp1 + 0.7f * fRec1[1];
-			output1[i0] = FAUSTFLOAT(fRec1[0]);
-			fRec0[1] = fRec0[0];
+			fRec3[0] = fSlow0 + fConst8 * fRec3[1];
+			float fTemp2 = std::tan(fConst6 * fRec3[0]);
+			float fTemp3 = CompiledFaust_faustpower2_f(fTemp2);
+			float fTemp4 = 0.0f - 2.0f / fTemp3;
+			float fTemp5 = 1.0f / fTemp2;
+			float fTemp6 = (fTemp5 + -1.9318516f) / fTemp2 + 1.0f;
+			float fTemp7 = 1.0f - 1.0f / fTemp3;
+			float fTemp8 = (fTemp5 + 1.9318516f) / fTemp2 + 1.0f;
+			fRec6[0] = fTemp0 - (fRec6[2] * fTemp6 + 2.0f * fRec6[1] * fTemp7) / fTemp8;
+			float fTemp9 = (fTemp5 + -1.4142135f) / fTemp2 + 1.0f;
+			float fTemp10 = (fTemp5 + 1.4142135f) / fTemp2 + 1.0f;
+			fRec5[0] = (fRec6[1] * fTemp4 + fRec6[0] / fTemp3 + fRec6[2] / fTemp3) / fTemp8 - (fRec5[2] * fTemp9 + 2.0f * fTemp7 * fRec5[1]) / fTemp10;
+			float fTemp11 = (fTemp5 + -0.5176381f) / fTemp2 + 1.0f;
+			float fTemp12 = (fTemp5 + 0.5176381f) / fTemp2 + 1.0f;
+			fRec4[0] = (fTemp4 * fRec5[1] + fRec5[0] / fTemp3 + fRec5[2] / fTemp3) / fTemp10 - (fRec4[2] * fTemp11 + 2.0f * fTemp7 * fRec4[1]) / fTemp12;
+			fRec2[0] = (fTemp4 * fRec4[1] + fRec4[0] / fTemp3 + fRec4[2] / fTemp3) / fTemp12 - fConst5 * (fConst9 * fRec2[2] + fConst10 * fRec2[1]);
+			fRec1[0] = fConst5 * (fRec2[2] + fRec2[0] + 2.0f * fRec2[1]) - fConst4 * (fConst11 * fRec1[2] + fConst10 * fRec1[1]);
+			fRec0[0] = fConst4 * (fRec1[2] + fRec1[0] + 2.0f * fRec1[1]) - fConst3 * (fConst12 * fRec0[2] + fConst10 * fRec0[1]);
+			output0[i0] = FAUSTFLOAT(fConst3 * (fRec0[2] + fRec0[0] + 2.0f * fRec0[1]));
+			fRec12[0] = fTemp1 - (fTemp6 * fRec12[2] + 2.0f * fTemp7 * fRec12[1]) / fTemp8;
+			fRec11[0] = (fTemp4 * fRec12[1] + fRec12[0] / fTemp3 + fRec12[2] / fTemp3) / fTemp8 - (fTemp9 * fRec11[2] + 2.0f * fTemp7 * fRec11[1]) / fTemp10;
+			fRec10[0] = (fTemp4 * fRec11[1] + fRec11[0] / fTemp3 + fRec11[2] / fTemp3) / fTemp10 - (fTemp11 * fRec10[2] + 2.0f * fTemp7 * fRec10[1]) / fTemp12;
+			fRec9[0] = (fTemp4 * fRec10[1] + fRec10[0] / fTemp3 + fRec10[2] / fTemp3) / fTemp12 - fConst5 * (fConst9 * fRec9[2] + fConst10 * fRec9[1]);
+			fRec8[0] = fConst5 * (fRec9[2] + fRec9[0] + 2.0f * fRec9[1]) - fConst4 * (fConst11 * fRec8[2] + fConst10 * fRec8[1]);
+			fRec7[0] = fConst4 * (fRec8[2] + fRec8[0] + 2.0f * fRec8[1]) - fConst3 * (fConst12 * fRec7[2] + fConst10 * fRec7[1]);
+			output1[i0] = FAUSTFLOAT(fConst3 * (fRec7[2] + fRec7[0] + 2.0f * fRec7[1]));
+			fRec3[1] = fRec3[0];
+			fRec6[2] = fRec6[1];
+			fRec6[1] = fRec6[0];
+			fRec5[2] = fRec5[1];
+			fRec5[1] = fRec5[0];
+			fRec4[2] = fRec4[1];
+			fRec4[1] = fRec4[0];
+			fRec2[2] = fRec2[1];
+			fRec2[1] = fRec2[0];
+			fRec1[2] = fRec1[1];
 			fRec1[1] = fRec1[0];
+			fRec0[2] = fRec0[1];
+			fRec0[1] = fRec0[0];
+			fRec12[2] = fRec12[1];
+			fRec12[1] = fRec12[0];
+			fRec11[2] = fRec11[1];
+			fRec11[1] = fRec11[0];
+			fRec10[2] = fRec10[1];
+			fRec10[1] = fRec10[0];
+			fRec9[2] = fRec9[1];
+			fRec9[1] = fRec9[0];
+			fRec8[2] = fRec8[1];
+			fRec8[1] = fRec8[0];
+			fRec7[2] = fRec7[1];
+			fRec7[1] = fRec7[0];
 		}
 	}
 
